@@ -19,6 +19,11 @@ grayMap.addTo(myMap);
 
 d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson", function(data) {
 
+console.log(data.features.map(function(earthquake) {
+    return earthquake.properties.mag
+}))
+
+
     // Function to Determine Style of Marker Based on the Magnitude of the Earthquake
     function createFeatures(feature) {
         return {
@@ -60,11 +65,11 @@ d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geoj
 
     // Create a GeoJSON Layer Containing the Features Array on the earthquakeData Object
     L.geoJson(data, {
-        pointToLayer: function(feature, latlng) {
+        pointToLayer: function(features, latlng) {
             return L.circleMarker(latlng);
         },
         style: createFeatures,
-        onEachFeature: function(feature, layer) {
+        onEachFeature: function(features, layer) {
             layer.bindPopup(
                 "Magnitude:"
                 + features.properties.mag
@@ -97,6 +102,6 @@ d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geoj
         return div;
     };
 
-    // Add Legend to the Map
+    // Add Legend to my Map
     legend.addTo(myMap);
 });
